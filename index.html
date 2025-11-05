@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Cidade Lado Leste — Calculadora de Penas</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+   <header>
+      <div>
+        <h1>Cidade Lado Leste — Calculadora de Penas</h1>
+        <p class="lead">Simulador de penas com base no Código Penal Lado Leste.</p>
+      </div>
+      <div class="controls-header">
+        <button class="btn" onclick="downloadSummaryPNG()">Gerar imagem</button>
+      </div>
+    </header>
+
+    <main class="main-form">
+      <section class="form" id="formSection">
+        <label for="nome">Nome completo</label>
+        <input id="nome" type="text" placeholder="Ex.: João da Silva" oninput="updateSummary()">
+
+        <div class="row">
+          <div class="col">
+            <label for="passport">Passaporte / Documento</label>
+            <input id="passport" type="text" placeholder="AA123456" oninput="updateSummary()">
+          </div>
+          <div style="width:140px">
+            <label>Data</label>
+            <input id="date" type="date" oninput="updateSummary()">
+          </div>
+        </div>
+        
+        <label for="photoUpload" class="photo-label">Foto do Indivíduo (Opcional)</label>
+        <input id="photoUpload" type="file" accept="image/*" onchange="previewPhoto()">
+        <div id="photoPreviewContainer" class="photo-preview-container">
+          <p id="photoHint">Clique aqui para carregar a imagem</p>
+        </div>
+        
+
+        <div class="controls">
+          <label><input id="attorney" type="checkbox" onchange="updateSummary()"> Tem advogado (aten. 25%)</label>
+          <label><input id="confession" type="checkbox" onchange="updateSummary()"> Confissão (aten. 30%)</label>
+          <label><input id="primario" type="checkbox" onchange="updateSummary()"> Réu primário (aten. 20%)</label>
+          <label><input id="collab" type="checkbox" onchange="updateSummary()"> Colaboração (aten. 10%)</label>
+          <label><input id="delacao" type="checkbox" onchange="updateSummary()"> Delação premiada (aten. até 50%)</label>
+          <label><input id="reincidente" type="checkbox" onchange="updateSummary()"> Reincidência (agravante +10%)</label>
+        </div>
+
+        <label class="section-title">Crimes</label>
+        <div id="crimeContainer" class="crime-container"></div>
+
+        <div class="actions-row">
+          <button class="btn" onclick="checkAll(true)">Marcar todos visíveis</button>
+          <button class="ghost" onclick="checkAll(false)">Desmarcar</button>
+          <button class="btn" onclick="exportJSON()">Exportar JSON</button>
+        </div>
+      </section>
+    </main>
+
+    <aside class="summary" id="summaryCard">
+      <div class="summary-header">
+        <div>
+          <div id="sName" class="big">—</div>
+          <div id="sDoc" class="muted">—</div>
+        </div>
+      </div>
+      <div class="stat"><div class="muted">Pena total</div><div id="sMonths" class="big">0 meses</div></div>
+      <div class="stat"><div class="muted">Multa total</div><div id="sFine" class="big">R$ 0,00</div></div>
+      <div class="stat"><div class="muted">Crimes selecionados</div><div id="sCount" class="big">0</div></div>
+      <div class="stat"><div class="muted">Fiança aplicável</div><div id="sFiança" class="big">Sim</div></div>
+
+      <div class="muted">Lista</div>
+      <div id="sList" class="crime-list"></div>
+
+      <div class="footer-note">Observação: valores e regras são exemplos baseados no PDF fornecido.</div>
+    </aside>
+  </div>
+  <script>
+      // Este bloco de script inicia a listagem e o resumo
+      document.addEventListener('DOMContentLoaded', () => {
+        renderCrimeList();
+        updateSummary();
+      });
+    </script>
+  <script src="script.js"></script>
+</body>
+</html>
